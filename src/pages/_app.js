@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { EmployeeProvider } from '../contexts/EmployeeContext';
-import EmployeeList from '../components/EmployeeList';
-import EmployeeForm from '../components/EmployeeForm';
-import '../styles/globals.css';
+import EmployeeList from '../components/EmployeeList/EmployeeList';
+import EmployeeForm from '../components/EmployeeForm/EmployeeForm';
+import '../styles/globals.scss';
 
 function MyApp({ Component, pageProps }) {
   const [showForm, setShowForm] = useState(false);

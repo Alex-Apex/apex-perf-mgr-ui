@@ -1,6 +1,6 @@
 // components/Employee.js
 import React, { useContext } from 'react';
-import { EmployeeContext } from '../contexts/EmployeeContext';
+import { EmployeeContext } from '../../contexts/EmployeeContext';
 
 function Employee({ employee }) {
   const { deleteEmployee } = useContext(EmployeeContext);

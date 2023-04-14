@@ -1,6 +1,6 @@
 // components/EmployeeForm.js
 import React, { useState, useContext, useEffect } from 'react';
-import { EmployeeContext } from '../contexts/EmployeeContext';
+import { EmployeeContext } from '../../contexts/EmployeeContext';
 
 function EmployeeForm({ employeeToEdit }) {
   const { addEmployee, editEmployee } = useContext(EmployeeContext);

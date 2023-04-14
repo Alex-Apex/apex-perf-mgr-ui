@@ -1,7 +1,7 @@
 // pages/index.js
 import React, { useState } from 'react';
-import EmployeeList from '../components/EmployeeList';
-import EmployeeForm from '../components/EmployeeForm';
+import EmployeeList from '../components/EmployeeList/EmployeeList';
+import EmployeeForm from '../components/EmployeeForm/EmployeeForm';
 
 function HomePage() {
   const [showForm, setShowForm] = useState(false);
@@ -13,7 +13,7 @@ function HomePage() {
   return (
     <div className="Home">
       <header>
-        <h1>Employee Performance Tracker</h1>
+        <h1>Performance Tracker</h1>
         <button onClick={toggleFormVisibility}>
           {showForm ? 'Hide Form' : 'Add Employee'}
         </button>
