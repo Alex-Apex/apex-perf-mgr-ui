@@ -1,6 +1,22 @@
-node_modules
+# Next.js build output
+.next/
+
+# Node.js dependencies
 node_modules/
+
+# Environment variables
 .env
+
+# Log files
 *.log
 
-.next
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
