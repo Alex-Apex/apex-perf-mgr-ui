@@ -1,11 +1,84 @@
 $primary-color: #3498db;
 $secondary-color: #2ecc71;
 $accent-color: #2ecc71;
-$background-color: #cdcdcd;
+$background-color: #f0f0f0;
 $text-color:#555;
+
+html, #__next {
+  height: 100%;
+}
 
 body {
   background-color: $background-color;
   color: $text-color;
   font-family: Arial, Helvetica, sans-serif;
+  height: 100%;
+}
+
+.App {
+  display: grid;
+  grid-template-columns: 250px 3fr;
+  grid-template-rows: 1fr 4fr;
+  grid-template-areas: "sidebar capture" "sidebar datatable";
+  grid-gap: 16px;
+  height: 100%;
+  width: 100%;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background-color: $primary-color;
+  color: $background-color;
+  padding: 5px;
+  /* Add your sidebar styles */
+}
+
+.capture {
+  grid-area: capture;
+  height:100%;
+}
+
+.datatable {
+  grid-area: datatable;
+  /* Add your data table area styles */
+}
+
+/* EmployeeList.module.css */
+.EmployeeList {
+  width: 100%;
+  font-family: Arial, sans-serif;
+}
+
+.EmployeeList table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.EmployeeList th,
+.EmployeeList td {
+  border: 1px solid #d0e0ec;
+  padding: 8px;
+  text-align: left;
+}
+
+.EmployeeList th {
+  background-color: $primary-color;
+  color: white;
+  font-weight: bold;
+}
+
+.EmployeeList tr:nth-child(even) {
+  background-color: #f0f3f5;
+}
+
+.EmployeeList tr:hover {
+  background-color: #d9e1e8;
+}
+
+.EmployeeList caption {
+  padding: 8px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #3b4d61;
+  margin-bottom: 8px;
 }

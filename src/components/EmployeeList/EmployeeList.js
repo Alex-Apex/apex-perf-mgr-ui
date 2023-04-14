@@ -7,13 +7,13 @@ function EmployeeList() {
   const { employees } = useContext(EmployeeContext);
 
   if (employees.length === 0) {
-    return <p>No employees found.</p>;
+    return <p>No employees found. huh!?</p>;
   }
 
   return (
     <div className="EmployeeList">
-      <h2>Employees</h2>
       <table>
+        <caption>These are your employees</caption>
         <thead>
           <tr>
             <th>ID</th>

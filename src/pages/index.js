@@ -1,6 +1,5 @@
 // pages/index.js
 import React, { useState } from 'react';
-import EmployeeList from '../components/EmployeeList/EmployeeList';
 import EmployeeForm from '../components/EmployeeForm/EmployeeForm';
 
 function HomePage() {
@@ -12,14 +11,10 @@ function HomePage() {
 
   return (
     <div className="Home">
-      <header>
-        <h1>Performance Tracker</h1>
-        <button onClick={toggleFormVisibility}>
-          {showForm ? 'Hide Form' : 'Add Employee'}
-        </button>
-      </header>
-      {showForm && <EmployeeForm />}
-      <EmployeeList />
+        {showForm && <EmployeeForm />}
+      <button onClick={toggleFormVisibility}>
+        {showForm ? 'Hide Form' : 'Add Employee'}
+      </button>
     </div>
   );
 }

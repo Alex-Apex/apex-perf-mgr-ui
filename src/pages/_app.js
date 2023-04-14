@@ -14,15 +14,16 @@ function MyApp({ Component, pageProps }) {
   return (
     <EmployeeProvider>
       <div className="App">
-        <header>
-          <h1>Employee Performance Tracker</h1>
-          <button onClick={toggleFormVisibility}>
-            {showForm ? 'Hide Form' : 'Add Employee'}
-          </button>
-        </header>
+        <div className='sidebar'>
+        <h1>Apex Practice Performance Tracker</h1>
+        </div>
+        <div className='capture'>
         {showForm && <EmployeeForm />}
-        <EmployeeList />
-        <Component {...pageProps} />
+          <Component {...pageProps} />
+        </div>
+        <div className='datatable'>
+          <EmployeeList />
+        </div>
       </div>
     </EmployeeProvider>
   );
