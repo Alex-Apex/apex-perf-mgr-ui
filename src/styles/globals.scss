@@ -12,6 +12,7 @@ $logo-grey: #7C95A5;
 $grey1:#808083;
 $grey2:#D2DDE8;
 $white:#fff;
+$font: Arial, Helvetica, sans-serif;
 /*-- Application's color scheme--*/
 $primary-color: $apex-blue;
 $secondary-color:$teal1;
@@ -27,8 +28,9 @@ html, #__next {
 body {
   background-color: $background-color;
   color: $text-color;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: $font;
   height: 100%;
+  margin: 0;
 }
 
 .App {
@@ -61,8 +63,7 @@ body {
 
 /* EmployeeList.module.css */
 .EmployeeList {
-  width: 100%;
-  font-family: Arial, sans-serif;
+  width: 100%;  
 }
 
 .EmployeeList table {
@@ -72,7 +73,7 @@ body {
 
 .EmployeeList th,
 .EmployeeList td {
-  border: 1px solid #d0e0ec;
+  border: 1px solid $teal3;
   padding: 8px;
   text-align: left;
 }
@@ -95,6 +96,6 @@ body {
   padding: 8px;
   font-size: 1.2em;
   font-weight: bold;
-  color: #3b4d61;
+  color: $grey1;
   margin-bottom: 8px;
 }
