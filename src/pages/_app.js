@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { EmployeeProvider } from '../contexts/EmployeeContext';
 import EmployeeList from '../components/EmployeeList/EmployeeList';
 import EmployeeForm from '../components/EmployeeForm/EmployeeForm';
+import SidebarMenu from '@/components/SidebarMenu/SidebarMenu';
 import '../styles/globals.scss';
 
 function MyApp({ Component, pageProps }) {
@@ -16,6 +17,7 @@ function MyApp({ Component, pageProps }) {
       <div className="App">
         <div className='sidebar'>
         <h1>Apex Practice Performance Tracker</h1>
+        <SidebarMenu/>
         </div>
         <div className='capture'>
         {showForm && <EmployeeForm />}
