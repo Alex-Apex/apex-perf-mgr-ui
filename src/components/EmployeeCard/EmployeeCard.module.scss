@@ -1,0 +1,31 @@
+@import '../../styles/_variables.scss';
+
+.EmployeeCard {
+    background-color: $white;
+    border: 1px solid $grey2;
+    border-radius: 8px; // Increase border radius for round edges
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Add shadow to create a card effect
+    padding: 16px;
+    width: 300px;
+    margin: 16px;
+  
+    h3 {
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+  
+    .field {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 8px;
+  
+      label {
+        font-weight: bold;
+      }
+  
+      span {
+        margin-left: 8px;
+      }
+    }
+  }
+  
