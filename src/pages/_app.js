@@ -14,11 +14,8 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <EmployeeProvider>
-      <div className="App">
-        <div className='sidebar'>
-        <h1>Apex Practice Performance Tracker</h1>
-        <SidebarMenu/>
-        </div>
+      <div className="App">                
+        <SidebarMenu/>        
         <div className='capture'>
         {showForm && <EmployeeForm />}
           <Component {...pageProps} />

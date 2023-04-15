@@ -1,30 +1,19 @@
+@use '../../styles/variables' as style;
+
 /* SidebarMenu.scss */
 .SidebarMenu {
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
-    background-color: #f6f8fa;
+    grid-area: sidebar;
+    background-color:style.$white;
+    color: style.$teal2;
+    padding: 5px;
   
     button {
-      margin-bottom: 1rem;
+      margin: 20px;
+      border: solid 1px style.$logo-grey;
     }
   }
   
-  .MenuItem {
-    display: flex;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    cursor: pointer;
-    position: relative;
   
-    span {
-      display: none;
-    }
-  
-    &:hover .MenuItem-tooltip {
-      display: block;
-    }
-  }
   
   .MenuItem-tooltip {
     display: none;
@@ -32,8 +21,8 @@
     left: 100%;
     top: 50%;
     transform: translateY(-50%);
-    background-color: #333;
-    color: #fff;
+    background-color: style.$logo-grey;
+    color:style.$teal3;
     padding: 0.25rem 0.5rem;
     font-size: 0.8rem;
     white-space: nowrap;
@@ -46,6 +35,22 @@
         display: inline;
         margin-left: 1rem;
       }
+    }
+  }
+  .MenuItem {
+    display: flex;
+    align-items: center;
+    padding:10px;
+    margin:20px;
+    cursor: pointer;
+    position: relative;
+  
+    span {
+      display: none;
+    }
+  
+    &:hover .MenuItem-tooltip {
+      display: block;
     }
   }
   

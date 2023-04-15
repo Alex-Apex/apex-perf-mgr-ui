@@ -17,12 +17,15 @@ const SidebarMenu = () => {
   
     return (
       <div className={`SidebarMenu${fullMode ? ' full-mode' : ''}`}>
+        <h2>Apex Performance Tracker</h2>
         <button onClick={() => setFullMode(!fullMode)}>
           {fullMode ? 'Switch to Icon Mode' : 'Switch to Full Mode'}
         </button>
-        <MenuItem icon={MdHome} name="Home" tooltip="Go to the homepage" />
-        <MenuItem icon={MdWork} name="Projects" tooltip="View your projects" />
-        <MenuItem icon={MdSettings} name="Settings" tooltip="Change app settings" />
+        <MenuItem icon={MdHome} name="Performance Tracker" tooltip="Go to the performance Tracker" />
+        <MenuItem icon={MdWork} name="Bench Report" tooltip="View your projects" />
+        <MenuItem icon={MdSettings} name="Hiring Pipeline" tooltip="Current hiring Pipeline" />
+        <MenuItem icon={MdSettings} name="OrganizationalView" tooltip="Your Org" />
+        <MenuItem icon={MdSettings} name="Playbook" tooltip="Go to your Play Book" />
       </div>
     );
   };

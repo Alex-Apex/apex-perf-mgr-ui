@@ -1,13 +1,12 @@
-@import './variables.scss';
+@use './variables';
 
 html, #__next {
   height: 100%;
 }
 
 body {
-  background-color: $background-color;
-  color: $text-color;
-  font-family: $font;
+  background-color: variables.$background-color;
+  font-family: variables.$font;
   height: 100%;
   margin: 0;
 }
@@ -20,14 +19,6 @@ body {
   grid-gap: 16px;
   height: 100%;
   width: 100%;
-}
-
-.sidebar {
-  grid-area: sidebar;
-  background-color: $primary-color;
-  color: $background-color;
-  padding: 5px;
-  /* Add your sidebar styles */
 }
 
 .capture {
@@ -52,13 +43,13 @@ body {
 
 .EmployeeList th,
 .EmployeeList td {
-  border: 1px solid $teal3;
+  border: 1px solid variables.$teal3;
   padding: 8px;
   text-align: left;
 }
 
 .EmployeeList th {
-  background-color: $primary-color;
+  background-color: variables.$primary-color;
   color: white;
   font-weight: bold;
 }
@@ -75,6 +66,6 @@ body {
   padding: 8px;
   font-size: 1.2em;
   font-weight: bold;
-  color: $grey1;
+  color: variables.$grey1;
   margin-bottom: 8px;
 }
