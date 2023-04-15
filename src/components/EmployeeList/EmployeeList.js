@@ -1,7 +1,7 @@
-// components/EmployeeList.js
 import React, { useContext } from 'react';
 import { EmployeeContext } from '../../contexts/EmployeeContext';
 import Employee from '../Employee/Employee';
+import styles from'./EmployeeList.module.scss';
 
 function EmployeeList() {
   const { employees } = useContext(EmployeeContext);
@@ -11,7 +11,7 @@ function EmployeeList() {
   }
 
   return (
-    <div className="EmployeeList">
+    <div className={styles.EmployeeList}>
       <table>
         <caption>These are your employees</caption>
         <thead>

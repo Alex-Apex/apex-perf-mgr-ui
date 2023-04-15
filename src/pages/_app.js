@@ -16,13 +16,9 @@ function MyApp({ Component, pageProps }) {
     <EmployeeProvider>
       <div className="App">                
         <SidebarMenu/>        
-        <div className='capture'>
         {showForm && <EmployeeForm />}
           <Component {...pageProps} />
-        </div>
-        <div className='datatable'>
           <EmployeeList />
-        </div>
       </div>
     </EmployeeProvider>
   );

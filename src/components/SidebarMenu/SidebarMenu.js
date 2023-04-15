@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { MdHome, MdWork, MdSettings } from 'react-icons/md';
-import './SidebarMenu.module.scss';
+import styles from './SidebarMenu.module.scss';
 
 const MenuItem = ({ icon: Icon, name, tooltip }) => {
     return (
-      <div className="MenuItem">
+      <div className={styles.MenuItem}>
         <Icon />
         <span>{name}</span>
-        {tooltip && <div className="MenuItem-tooltip">{tooltip}</div>}
+        {tooltip && <div className={styles.MenuItem-tooltip}>{tooltip}</div>}
       </div>
     );
   };
@@ -16,7 +16,7 @@ const SidebarMenu = () => {
     const [fullMode, setFullMode] = useState(false);
   
     return (
-      <div className={`SidebarMenu${fullMode ? ' full-mode' : ''}`}>
+      <div className={ fullMode ? styles.fullMode: styles.SidebarMenu }>
         <h2>Apex Performance Tracker</h2>
         <button onClick={() => setFullMode(!fullMode)}>
           {fullMode ? 'Switch to Icon Mode' : 'Switch to Full Mode'}
