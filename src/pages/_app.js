@@ -1,25 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { EmployeeProvider } from '../contexts/EmployeeContext';
-import EmployeeList from '../components/EmployeeList/EmployeeList';
-import EmployeeForm from '../components/EmployeeForm/EmployeeForm';
-import SidebarMenu from '@/components/SidebarMenu/SidebarMenu';
 import '../styles/globals.scss';
 
 function MyApp({ Component, pageProps }) {
-  const [showForm, setShowForm] = useState(false);
-
-  const toggleFormVisibility = () => {
-    setShowForm(!showForm);
-  };
-
+  
   return (
     <EmployeeProvider>
-      <div className="App">                
-        <SidebarMenu/>        
-        {showForm && <EmployeeForm />}
-          <Component {...pageProps} />
-          <EmployeeList />
-      </div>
+      <Component {...pageProps}/>
     </EmployeeProvider>
   );
 }
