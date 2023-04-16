@@ -7,6 +7,7 @@ const Button = ({
   icon,
   iconOnly = false,
   onClick,
+  isSubmit = true,
   ...otherProps
 }) => {
   const buttonClassName = primary
@@ -22,7 +23,7 @@ const Button = ({
   );
 
   return (
-    <button className={buttonClassName} onClick={onClick} {...otherProps}>
+    <button type={isSubmit?'submit':'button'} className={buttonClassName} onClick={onClick} {...otherProps}>
       {content}
     </button>
   );

@@ -77,7 +77,8 @@ function EmployeeForm({ employeeToEdit }) {
         <input type="text" name="resumeLink" value={employee.resumeLink} placeholder="link to resume document" onChange={handleChange}/>
         <input type="text" name="rejectionHistory" value={employee.rejectionHistory} placeholder="Rejection History" onChange={handleChange}/>
         <input type="text" name="notes" value={employee.notes} placeholder="Notes" onChange={handleChange}/>
-        <button type="submit">{employeeToEdit ? 'Update' : 'Add'} Employee</button>
+        
+        {/* <button type="submit">{employeeToEdit ? 'Update' : 'Add'} Employee</button> */}
       </form>
     );
   }

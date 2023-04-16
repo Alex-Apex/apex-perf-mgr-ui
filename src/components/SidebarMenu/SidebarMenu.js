@@ -7,7 +7,7 @@ const MenuItem = ({ icon: Icon, name, tooltip }) => {
       <div className={styles.MenuItem}>
         <Icon />
         <span>{name}</span>
-        {tooltip && <div className={styles.MenuItem-tooltip}>{tooltip}</div>}
+        {tooltip && <div className={styles.SidebarMenuTooltip}>{tooltip}</div>}
       </div>
     );
   };
