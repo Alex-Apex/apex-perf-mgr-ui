@@ -1,8 +1,9 @@
-// src/components/Button/Button.module.scss
+@use '../../styles/variables' as style;
+
 .primaryButton {
     // Styles for primary button
-    background-color: blue;
-    color: white;
+    background-color: style.$primary-color;
+    color: style.$white;
     border: none;
     padding: 0.5rem 1rem;
     border-radius: 4px;
@@ -12,9 +13,9 @@
   
   .secondaryButton {
     // Styles for secondary button
-    background-color: white;
-    color: blue;
-    border: 1px solid blue;
+    background-color: style.$white;
+    color: style.$primary-color;
+    border: 1px solid style.$primary-color;
     padding: 0.5rem 1rem;
     border-radius: 4px;
     cursor: pointer;
@@ -28,5 +29,6 @@
   
   .label {
     // Styles for the label
+    font-family: style.$font;
   }
   
