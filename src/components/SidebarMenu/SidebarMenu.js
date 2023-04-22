@@ -17,8 +17,8 @@ const SidebarMenu = () => {
   
     return (
       <div className={ fullMode ? styles.fullMode: styles.SidebarMenu }>
-        <h2>Apex Performance Tracker</h2>
-        <button onClick={() => setFullMode(!fullMode)}>
+        <h2 className="SidebarTitle">Apex Performance Tracker</h2>
+        <button className="SidebarButton" onClick={() => setFullMode(!fullMode)}>
           {fullMode ? 'Switch to Icon Mode' : 'Switch to Full Mode'}
         </button>
         <MenuItem icon={MdHome} name="Performance Tracker" tooltip="Go to the performance Tracker" />

@@ -7,23 +7,26 @@ import ModalScreen from '../components/ModalScreen/ModalScreen';
 import Button from '../components/Button/Button';
 
 const HomePage = () => {
-  let showModal = true;
-  const toggleModalScreenVisibility =()=>{
-    showModal = !showModal;
+  const[showModal, setShowModal] = useState(true); 
+
+  const toggleModalScreenVisibility = () => {
+    console.log("Clicked!", showModal);
+    setShowModal(!showModal);
   }
-  const getModalButtons = ()=>{
+
+  const getModalButtons = () => {
     return(
       <div>
-        <Button onClick={toggleModalScreenVisibility()} primary={false} label={`Cancel`} isSubmit={false}/>
+        <Button onClick={toggleModalScreenVisibility} primary={false} label={`Cancel`} isSubmit={false}/>
         {/*TODO: you need to get the state here to detect if adding or editing
         <button type="submit">{employeeToEdit ? 'Update' : 'Add'} Employee</button>
         */}
-        <Button onClick={toggleModalScreenVisibility()} primary={true} label={`Add New Employee`} isSubmit={true}/>
+        <Button onClick={() => {console.log("BLAH");}} primary={true} label={`Add New Employee`} isSubmit={true}/>
       </div>
     );
   }
 
-  const getAddNewEmployeeForm = ()=>{
+  const getAddNewEmployeeForm = () => {
     return(
       <EmployeeForm/>
     );
@@ -33,9 +36,9 @@ const HomePage = () => {
     <div className="Home">
       <SidebarMenu/>      
       <ModalScreen isOpen={showModal} 
-        children={getAddNewEmployeeForm()} title={`Adding a new employee`} 
-        onClose={console.log(`Closed`)} buttons={getModalButtons()}>
-      </ModalScreen>
+      children={getAddNewEmployeeForm()} title={`Adding a new employee`}
+      onClose={toggleModalScreenVisibility} // Remove the parentheses
+      buttons={getModalButtons()}/>
       <EmployeeList />
     </div>
   );
