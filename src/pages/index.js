@@ -9,8 +9,7 @@ import Button from '../components/Button/Button';
 const HomePage = () => {
   const[showModal, setShowModal] = useState(true); 
 
-  const toggleModalScreenVisibility = () => {
-    console.log("Clicked!", showModal);
+  const toggleModalScreenVisibility = () => {    
     setShowModal(!showModal);
   }
 
@@ -18,9 +17,6 @@ const HomePage = () => {
     return(
       <div>
         <Button onClick={toggleModalScreenVisibility} primary={false} label={`Cancel`} isSubmit={false}/>
-        {/*TODO: you need to get the state here to detect if adding or editing
-        <button type="submit">{employeeToEdit ? 'Update' : 'Add'} Employee</button>
-        */}
         <Button onClick={() => {console.log("BLAH");}} primary={true} label={`Add New Employee`} isSubmit={true}/>
       </div>
     );

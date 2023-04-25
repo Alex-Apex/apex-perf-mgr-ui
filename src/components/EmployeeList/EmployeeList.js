@@ -1,13 +1,28 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { EmployeeContext } from '../../contexts/EmployeeContext';
 import Employee from '../Employee/Employee';
 import styles from'./EmployeeList.module.scss';
 
 function EmployeeList() {
-  const { employees } = useContext(EmployeeContext);
+  const { employees, setEmployees } = useContext(EmployeeContext);
+  const fetchEmployees = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/employees');
+      const employeesData = await response.json();
+      
+      // Set the fetched data to the employees state in EmployeeContext
+      setEmployees(employeesData);
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+    }
+  };
 
+  useEffect(() => {
+    fetchEmployees();
+  }, []);
+  
   if (employees.length === 0) {
-    return <p>No employees found. huh!?</p>;
+    return <p>Did not find employees</p>;
   }
 
   return (
