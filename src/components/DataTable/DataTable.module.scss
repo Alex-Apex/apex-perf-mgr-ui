@@ -1,0 +1,40 @@
+@use '../../styles/_variables.scss' as style;
+    
+.DataTable {
+    grid-area: datatable;
+    width: 100%;  
+  }
+  
+.DataTable table {
+    border-collapse: collapse;
+    width: 100%;
+}
+  
+  .DataTable th,
+  .DataTable td {
+    border: 1px solid style.$teal3;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .DataTable th {
+    background-color: style.$primary-color;
+    color: style.$white;
+    font-weight: bold;
+  }
+  
+  .DataTable tr:nth-child(even) {
+    background-color: style.$grey2;;
+  }
+  
+  .DataTable tr:hover {
+    background-color: style.$teal2;
+  }
+  
+  .DataTable caption {
+    padding: 8px;
+    font-size: 1.2em;
+    font-weight: bold;
+    color: style.$grey1;
+    margin-bottom: 8px;
+  }

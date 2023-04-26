@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { EmployeeContext } from '../../contexts/EmployeeContext';
-import Employee from '../Employee/Employee';
-import styles from'./EmployeeList.module.scss';
+import DataTable from '../DataTable/DataTable';
+import styles from './EmployeeList.module.scss';
 
 function EmployeeList() {
   const { employees, setEmployees } = useContext(EmployeeContext);
@@ -9,7 +9,7 @@ function EmployeeList() {
     try {
       const response = await fetch('http://localhost:3001/employees');
       const employeesData = await response.json();
-      
+
       // Set the fetched data to the employees state in EmployeeContext
       setEmployees(employeesData);
     } catch (error) {
@@ -20,31 +20,24 @@ function EmployeeList() {
   useEffect(() => {
     fetchEmployees();
   }, []);
-  
+
   if (employees.length === 0) {
     return <p>Did not find employees</p>;
   }
+    
+  const columns = [
+    { field: 'practice_id', label: 'Practice ID' },
+    { field: 'current_title', label: 'Seniority Level' },
+    { field: 'name', label: 'Name' },
+    { field: 'username', label: 'Username' },
+    { field: 'pool_id', label: 'Pool ID' },
+    // Add an additional column for the Actions, if needed
+  ];
 
   return (
     <div className={styles.EmployeeList}>
-      <table>
-        <caption>These are your employees</caption>
-        <thead>
-          <tr>
-            <th>Practice ID</th>
-            <th>Seniority Level</th>
-            <th>Name</th>
-            <th>Username</th>
-            <th>Pool ID</th>            
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {employees.map((employee) => (
-            <Employee key={employee.id} employee={employee} />
-          ))}
-        </tbody>
-      </table>
+      <h2>All Employees</h2>
+      <DataTable columns={columns} data={employees} />
     </div>
   );
 }
