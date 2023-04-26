@@ -12,23 +12,31 @@ function Employee({ employee }) {
   const handleEdit = () => {
     // Implement the logic to show the edit form and populate it with the employee data
   };
-
+/*
+address: null
+company_end_date: null
+company_start_date: null
+current_title: "CS - Practice Manager"
+id: 1
+location: "CDMX"
+name:"Marco Mendieta"
+pool_id: "MDC - Alejandro Gomez"
+practice_id: 3
+project_end_date: null
+project_start_date: null
+ps_id: null
+ps_name:"Mendieta,Marco"
+supervisor_id: 2
+tags: null
+username: "mmendieta"
+*/
   return (
     <tr className="Employee">
-      <td>{employee.practice}</td>
-      <td>{employee.seniorityLevel}</td>
+      <td>{employee.practice_id}</td>
+      <td>{employee.current_title}</td>
       <td>{employee.name}</td>
-      <td>{employee.bhid}</td>
-      <td>{employee.status}</td>
-      <td>{employee.firstMatch}</td>
-      <td>{employee.secondaryMatch}</td>
-      <td>{employee.mainSkillSet}</td>
-      <td>{employee.mostRecentProject}</td>
-      <td>{employee.projectRollOffDate}</td>
-      <td>{employee.weeksOnBench}</td>
-      <td>{employee.resumeLink}</td>
-      <td>{employee.rejectionHistory}</td>
-      <td>{employee.notes}</td>
+      <td>{employee.username}</td>
+      <td>{employee.pool_id}</td>     
       <td>
         <button onClick={handleEdit}>Edit</button>
         <button onClick={handleDelete}>Delete</button>

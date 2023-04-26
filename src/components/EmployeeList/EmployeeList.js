@@ -31,20 +31,11 @@ function EmployeeList() {
         <caption>These are your employees</caption>
         <thead>
           <tr>
-            <th>Practice</th>
+            <th>Practice ID</th>
             <th>Seniority Level</th>
-            <th>Employee Name</th>
-            <th>BHID</th>
-            <th>Status</th>
-            <th>First Match</th>
-            <th>Secondary Match</th>
-            <th>Main Skill Set</th>
-            <th>Most Recent Project</th>
-            <th>Project Roll Off Date</th>
-            <th>Weeks on Bench</th>
-            <th>Resume Link</th>
-            <th>Rejection History</th>
-            <th>Notes</th>
+            <th>Name</th>
+            <th>Username</th>
+            <th>Pool ID</th>            
             <th>Actions</th>
           </tr>
         </thead>
