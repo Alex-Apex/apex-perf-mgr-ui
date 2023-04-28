@@ -31,6 +31,8 @@ const SidebarMenu = () => {
         <MenuItem icon={MdSettings} name="Hiring Pipeline" tooltip="Current hiring Pipeline" href="/hiring-pipeline" />
         <MenuItem icon={MdSettings} name="OrganizationalView" tooltip="Your Org" href="/organizational-view" />
         <MenuItem icon={MdSettings} name="Playbook" tooltip="Go to your Play Book" href="/playbook" />
+        <MenuItem icon={MdSettings} name="SkillTree" tooltip="Go to Skill Tree App" href="/skill-tree" />
+        <MenuItem icon={MdWork} name="My Tools" tooltip="Go to your hacky tools" href="/tools" />
 
       </div>
     );
