@@ -41,3 +41,27 @@
     background-color: $orange2;
   }
 }
+
+.MenuItem {
+  position: relative;
+}
+
+.SidebarMenuTooltip {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 100%;
+  transform: translateY(-50%);
+  background-color: $apex-blue;
+  color: $white;
+  padding: 5px 10px;
+  border-radius: 3px;
+  white-space: nowrap;
+  font-size: 14px;
+  z-index: 10;
+  margin-left: 10px;
+}
+
+.MenuItem:hover .SidebarMenuTooltip {
+  display: block;
+}
