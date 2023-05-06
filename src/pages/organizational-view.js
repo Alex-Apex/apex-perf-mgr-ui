@@ -56,10 +56,15 @@ const OrganizationalView = () => {
 
   return (
     <Layout>
-      <div>
         <h1>Digital Products Organization</h1>
+        <div>
+          Features:
+          <ul>
+            <li>controls to toggle employee baseball cards and edit employees</li>            
+            <li>toggle $ view, perf view, promos view, workload heatmap by supervisor</li>            
+          </ul>
+        </div>
         <OrganizationalTree data={employeeTree} />
-      </div>
     </Layout>
   );
 };

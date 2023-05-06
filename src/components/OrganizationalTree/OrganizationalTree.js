@@ -65,8 +65,9 @@ const OrganizationalTree = ({ data }) => {
         .attr('transform', (d) => `translate(${source.y0},${source.x0})`);
 
       nodeEnter.append('circle')
-        .attr('r', 7)
-        .style('fill', (d) => d.children || d._children ? 'lightsteelblue' : '#fff')
+        .attr('r', (d) => d.children || d._children ? 10 : 5)
+        // TODO: you can make conditional colors with a function that compares supervisor workload
+        .style('fill', (d) => d.children || d._children ? '#7C95A5' : '#D2DDE8')
         .style('cursor', (d) => d.children || d._children ? 'pointer' : 'default')
         .on('click', (event, d) => {
           if (d.children || d._children) {
@@ -79,7 +80,7 @@ const OrganizationalTree = ({ data }) => {
          .attr('dx', '13px')
          .attr('text-anchor', 'middle')
          .style('font-size', '10px')
-         .style('fill', '#000')
+         .style('fill', '#fff')
          .text((d) => d.children || d._children ? getChildCount(d) : '');
 
         nodeEnter.append('text')
@@ -96,12 +97,12 @@ const OrganizationalTree = ({ data }) => {
         .attr('transform', (d) => `translate(${d.y},${d.x})`);
 
       nodeUpdate.select('circle')
-        .attr('r', 7)
-        .style('fill', (d) => d.children || d._children ? 'lightsteelblue' : '#fff');
+        .attr('r', (d) => d.children || d._children ? 10 : 5)
+        .style('fill', (d) => d.children || d._children ? '#7C95A5' : '#D2DDE8');
 
       nodeUpdate.select('text')
         .attr('x', (d) => d.children || d._children ? -13 : 13)
-        .style('fill', '#000');
+        .style('fill', '#fff');
 
       node.exit().remove();
 

@@ -5,7 +5,8 @@ html, #__next {
 }
 
 body {
-  background-color: variables.$background-color;
+  background-color: variables.$white;
+  //background: linear-gradient(0deg, rgba(255,255,255,1) 31%, rgba(178,175,189,1) 100%);
   font-family: variables.$font;
   height: 100%;
   margin: 0;
