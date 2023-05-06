@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { EmployeeContext } from '@/contexts/EmployeeContext';
 import Layout from '../components/Layout/Layout';
-import SkillsTree from '../components/SkillsTree/SkillsTree';
+import OrganizationalTree from '@/components/OrganizationalTree/OrganizationalTree';
 
 const OrganizationalView = () => {
   const { employees, setEmployees } = useContext(EmployeeContext);
@@ -58,7 +58,7 @@ const OrganizationalView = () => {
     <Layout>
       <div>
         <h1>Digital Products Organization</h1>
-        <SkillsTree data={employeeTree} />
+        <OrganizationalTree data={employeeTree} />
       </div>
     </Layout>
   );
