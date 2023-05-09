@@ -55,15 +55,40 @@ const OrganizationalTree = ({ data }) => {
         }
         update(d);
       };
-                
+    
+      const getTextWidth = (text, fontSize) => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        context.font = `${fontSize}px sans-serif`;
+        const metrics = context.measureText(text);
+        return metrics.width;
+      };
+      
       // Update nodes
       const node = g.selectAll('g.node')
         .data(nodes, (d) => d.id || (d.id = ++i));
-
+      
       const nodeEnter = node.enter().append('g')
-        .attr('class', 'node')
-        .attr('transform', (d) => `translate(${source.y0},${source.x0})`);
-
+          .attr('class', 'node')
+          .attr('transform', (d) => `translate(${source.y0},${source.x0})`);
+          
+      // Name bounding box
+      nodeEnter.append('rect')
+        //.attr('x', (d) => d.children || d._children ? -getTextWidth(d.data.name, 12) / 2 - 68 : 8)
+        .attr('x', (d) => d.children || d._children ? -getTextWidth(d.data.name, 12)-25 : 6)
+        .attr('y', -8)
+        .attr('width', (d) => getTextWidth(d.data.name, 12) + 20)
+        .attr('height', 16)
+        .attr('rx', 5)
+        .attr('ry', 5)
+        .style('fill', (d) => d.children || d._children ? '#7C95A5AD' : '#d2dde85e')
+        .style('cursor', (d) => d.children || d._children ? 'pointer' : 'default')
+        .on('click', (event, d) => {
+          if (d.children || d._children) {
+            toggleChildren(d);
+          }
+        });
+      
       nodeEnter.append('circle')
         .attr('r', (d) => d.children || d._children ? 10 : 5)
         // TODO: you can make conditional colors with a function that compares supervisor workload
@@ -74,22 +99,23 @@ const OrganizationalTree = ({ data }) => {
             toggleChildren(d);
           }
         });
-
-       nodeEnter.append('text')
-         .attr('dy', '.35em')
-         .attr('dx', '13px')
-         .attr('text-anchor', 'middle')
-         .style('font-size', '10px')
-         .style('fill', '#fff')
-         .text((d) => d.children || d._children ? getChildCount(d) : '');
-
+        
+        nodeEnter.append('text')
+        .attr('dy', '.35em')
+        .attr('dx', '13px')
+        .attr('text-anchor', 'middle')
+        .style('font-size', '10px')
+        .style('fill', '#fff')
+        .text((d) => d.children || d._children ? getChildCount(d) : '');
+        
         nodeEnter.append('text')
           .attr('dy', '.35em')
-          .attr('x', (d) => d.children || d._children ? -13 : 13)
+          .attr('x', (d) => d.children || d._children ? -13 : 13)// Is this necessary?
           .attr('text-anchor', (d) => d.children || d._children ? 'end' : 'start')
+          .style('fill', '#000')
           .style('font-size','12px')
           .text((d) => d.data.name);
-            
+        
       const nodeUpdate = nodeEnter.merge(node);
 
       nodeUpdate.transition()

@@ -21,3 +21,17 @@ body {
   height: 100%;
   width: 100%;
 }
+
+
+.EmployeeForm {
+  display: flex;
+  flex-direction: column;
+  justify-items: stretch;
+  width:100%;
+}
+.FormRow {
+  display: flex;
+  flex-direction: row;
+  justify-items: stretch;
+  width: 100%;
+}
