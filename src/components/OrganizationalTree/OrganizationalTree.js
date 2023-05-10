@@ -73,8 +73,7 @@ const OrganizationalTree = ({ data }) => {
           .attr('transform', (d) => `translate(${source.y0},${source.x0})`);
           
       // Name bounding box
-      nodeEnter.append('rect')
-        //.attr('x', (d) => d.children || d._children ? -getTextWidth(d.data.name, 12) / 2 - 68 : 8)
+      nodeEnter.append('rect')        
         .attr('x', (d) => d.children || d._children ? -getTextWidth(d.data.name, 12)-25 : 6)
         .attr('y', -8)
         .attr('width', (d) => getTextWidth(d.data.name, 12) + 20)
