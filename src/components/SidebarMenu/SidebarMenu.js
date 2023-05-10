@@ -33,6 +33,7 @@ const SidebarMenu = () => {
         <MenuItem icon={MdSports} name="Playbook" tooltip="Go to your Play Book" href="/playbook" />
         <MenuItem icon={MdTravelExplore} name="SkillTree" tooltip="Go to Skill Tree App" href="/skill-tree" />
         <MenuItem icon={MdWork} name="My Tools" tooltip="Go to your hacky tools" href="/tools" />
+        <MenuItem icon={MdWork} name="Champion's Friday" tooltip="Tools and Stats for Champion's Friday" href="/champions" />
 
       </div>
     );
