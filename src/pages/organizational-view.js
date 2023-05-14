@@ -7,7 +7,7 @@ import Modal from '@/components/ModalScreen/ModalScreen';
 
 const OrganizationalView = () => {
   const { employees, setEmployees } = useContext(EmployeeContext);
-  const[showModal, setShowModal] = useState(true);
+  const[showModal, setShowModal] = useState(false);
   const fetchEmployees = async () => {
     try {
       // TODO: Get rid of this hardcoded url

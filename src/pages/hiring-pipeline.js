@@ -7,7 +7,7 @@ import DataTable from '@/components/DataTable/DataTable';
 
 const HiringPipelineContent = () => {
   const { projects, setProjects } = useContext(ProjectContext);
-  const[showModal, setShowModal] = useState(true);
+  const[showModal, setShowModal] = useState(false);
 
   /**
    * Gets the available projects from the service. 
@@ -40,6 +40,10 @@ const HiringPipelineContent = () => {
     return columns;
   };
 
+  /**
+   * 
+   * @returns 
+   */
   const getProjectContents = () => {
     let contents;
     if(projects && projects.length > 0){
@@ -56,13 +60,64 @@ const HiringPipelineContent = () => {
     return contents;
   };
 
+  /**
+   * 
+   */
+  const getProjectFields = () => {
+    return(
+      <div>
+        <div className='formRow'>
+          <label htmlFor='txtProjectName'> Name: </label>
+          <input type="text" id='txtProjectName'/>
+        </div>
+        <div className='formRow'>
+          <label htmlFor='txtProjectDescription'> Description: </label>
+          <input type="text" id='txtProjectDescription'/>
+        </div>
+      </div>
+    );
+  };
+
+  /**
+   * 
+   * @returns 
+   */
+  const getModalButtons = () => {
+    return(
+      <div>
+        <Button id="btnCancel"
+          onClick={toggleModalScreenVisibility} 
+          primary={false} label={`Cancel`} isSubmit={false}/>
+        <Button id="btnAddProject" 
+          onClick={() => {console.error(`btnAddProject has not been implemented`);}} 
+          primary={true} label={`Add New Project`} isSubmit={true}/>
+      </div>
+    );
+  };
+
+  /**
+   * Toggles the visibility of the modal screen.
+   */
+  const toggleModalScreenVisibility = () => {
+    setShowModal(!showModal);
+  };
+
   return (
     <div>
       <h1>Hiring Pipeline</h1>
       <p>Here, you'll add projects, their needs and suggest profiles and assign benched employees...</p>
-      <Button label={'Add New Project'} primary={true} 
-        isSubmit={false} onClick={() =>{console.log("y'all need to implemen this!")}}/>
+      <Button label={'Add New Project'}
+        primary={true} 
+        isSubmit={false} 
+        onClick={() => {toggleModalScreenVisibility();}}/>
+
         { getProjectContents() }
+
+      <Modal id="modUpsertProject" 
+        isOpen={showModal} 
+        children={getProjectFields()} 
+        buttons={getModalButtons()} 
+        title={'Adding a new project'}/>
     </div>  
   );
 };
