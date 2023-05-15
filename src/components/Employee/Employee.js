@@ -1,6 +1,8 @@
 // components/Employee.js
 import React, { useContext } from 'react';
 import { EmployeeContext } from '../../contexts/EmployeeContext';
+import Button from '../Button/Button';
+import style from './Employee.module.scss';
 
 function Employee({ employee }) {
   const { deleteEmployee } = useContext(EmployeeContext);
@@ -10,38 +12,21 @@ function Employee({ employee }) {
   };
 
   const handleEdit = () => {
+    console.error('handle Edit is not yet implemented');
     // Implement the logic to show the edit form and populate it with the employee data
   };
-/*
-address: null
-company_end_date: null
-company_start_date: null
-current_title: "CS - Practice Manager"
-id: 1
-location: "CDMX"
-name:"Marco Mendieta"
-pool_id: "MDC - Alejandro Gomez"
-practice_id: 3
-project_end_date: null
-project_start_date: null
-ps_id: null
-ps_name:"Mendieta,Marco"
-supervisor_id: 2
-tags: null
-username: "mmendieta"
-*/
+  console.log(employee);
   return (
-    <tr className="Employee">
-      <td>{employee.practice_id}</td>
-      <td>{employee.current_title}</td>
-      <td>{employee.name}</td>
-      <td>{employee.username}</td>
-      <td>{employee.pool_id}</td>     
-      <td>
-        <button onClick={handleEdit}>Edit</button>
-        <button onClick={handleDelete}>Delete</button>
-      </td>
-    </tr>
+    <div className={style.employee}>
+      <div>Practice: {employee.Practice}</div>
+      <div>Level:{employee.Grade}</div>
+      <div>Name:{employee.Name}</div>
+      <div>Username:{employee.UserName}</div>
+      <div>Weeks On Bench:{employee['Weeks On Bench']}</div>
+      <div>
+        <Button onClick={handleEdit} label='Edit' primary={true}/>        
+      </div>
+    </div>
   );
 }
 

@@ -2,15 +2,28 @@ import React, { useContext, useEffect, useState } from 'react';
 import { BenchContext, BenchProvider } from '../contexts/BenchContext';
 import Layout from '../components/Layout/Layout';
 import DataTable from '@/components/DataTable/DataTable';
+import EmployeeList from '@/components/EmployeeList/EmployeeList';
 import ModalScreen from '../components/ModalScreen/ModalScreen';
 import Button from '@/components/Button/Button';
 // TODO: extract the web services url. 
 
 const BenchReportContent = () => {
-  const [showModal, setShowModal, selectedEmployee, setSelectedEmployee] = useState(true);
+  const [showModal, setShowModal] = useState(true);
+  const [showListView, setShowListView] = useState(true);
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
   const { bench, setBench } = useContext(BenchContext);
   let employee = {};
   let columns = [];
+
+  /**
+   * It shows the list view of the bench report for comparison.
+   * It provides a better UX
+   */
+  const toggleListView = () => {
+    console.log('Boop!');
+    setShowListView(!showListView);
+  };
+
   const handleSubmittedBenchedEmployeeChanges = async (employee) => {
     try {
       const request = {
@@ -25,7 +38,7 @@ const BenchReportContent = () => {
       if(result.employee) {
         // TODO: update this on the table
         console.log('employee', result.employee);
-        setSelectedEmployee(null);
+        setSelectedEmployee(result.employee);
       } else {
         console.error('Exception upserting employee', result.message);
       }
@@ -33,11 +46,13 @@ const BenchReportContent = () => {
       console.error('Exception while upserting employee', exception);
     }
   };
+
   const handleTxtGradeChange = (x) => {
 
   };
 
   const handleTxtCompetencyChange = () => {};
+  
   const getBenchEmployeeForm = () => {
     return (
       <div className='frmBenchEmployee'>
@@ -87,6 +102,10 @@ const BenchReportContent = () => {
       </div>
     );
   }
+
+  /**
+   * Gets the available bench information for review.
+   */
   const fetchBench = async () => {
     try {
       const response = await fetch('http://localhost:3001/employees/bench');
@@ -122,22 +141,41 @@ const BenchReportContent = () => {
     columns.push({ field: 'Actions', label:'Actions'});
   }
 
-    
-
-  return (
-    <div>
-      <h1>Bench Report</h1>
-      <Button label={'Add Employee to Bench'} primary={true}/>
-      <Button label={'Add New Project'} primary={false}/>
-
-      <ModalScreen isOpen={showModal} children={getBenchEmployeeForm()} title={`Add Employee to Bench`}
-      onClose={toggleModalScreenVisibility} buttons={getModalButtons()}/>
-      <DataTable columns={columns} data={bench} />
-      {/* Render your bench report here */}
-    </div>
-  );
+  if(!showListView) {
+    return (
+      <div>
+        <h1>Bench Report</h1>
+        <Button label={'Add Employee to Bench'} primary={true}/>
+        <Button label={'Toggle List View'} primary={false} 
+          onClick={() => {console.log(`ListViewVisible:${showListView}`);toggleListView();}}/>
+  
+        <ModalScreen id='mdlsAddEmployee' 
+          isOpen={showModal} 
+          children={getBenchEmployeeForm()} 
+          title={`Add Employee to Bench`}
+          onClose={toggleModalScreenVisibility} 
+          buttons={getModalButtons()}/>
+        <DataTable id='dtBenchReport' columns={columns} data={bench} />      
+      </div>
+    );
+  } else {
+    return (
+      <div>
+        <h1>Bench Report</h1>
+        <Button label={'Add Employee to Bench'} primary={true}/>
+        <Button label={'Toggle List View'} primary={false} onClick={() => {toggleListView();}}/>
+  
+        <ModalScreen isOpen={showModal} children={getBenchEmployeeForm()} title={`Add Employee to Bench`}
+          onClose={toggleModalScreenVisibility} buttons={getModalButtons()}/>
+        <EmployeeList id='emplstBenchReport' employeesData={bench} fields={columns} />    
+      </div>
+    );}
 };
 
+/**
+ * Finally renders the page with all components
+ * @returns 
+ */
 const BenchReport = () => {
   return (
     <Layout>

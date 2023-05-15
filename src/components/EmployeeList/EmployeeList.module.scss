@@ -1,40 +1,9 @@
 @use '../../styles/_variables.scss' as style;
     
 .EmployeeList {
-    grid-area: datatable;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
     width: 100%;  
-  }
-  
-.EmployeeList table {
-    border-collapse: collapse;
-    width: 100%;
-}
-  
-  .EmployeeList th,
-  .EmployeeList td {
-    border: 1px solid style.$teal3;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  .EmployeeList th {
-    background-color: style.$primary-color;
-    color: style.$white;
-    font-weight: bold;
-  }
-  
-  .EmployeeList tr:nth-child(even) {
-    background-color: style.$grey2;;
-  }
-  
-  .EmployeeList tr:hover {
-    background-color: style.$teal2;
-  }
-  
-  .EmployeeList caption {
-    padding: 8px;
-    font-size: 1.2em;
-    font-weight: bold;
-    color: style.$grey1;
-    margin-bottom: 8px;
   }
