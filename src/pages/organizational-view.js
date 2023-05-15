@@ -97,7 +97,7 @@ const OrganizationalView = () => {
               practiceName: document.getElementById("txtPracticeName").value,
               poolId: document.getElementById("txtPoolName").value,
             };
-            const result = await postEmployee(employeeData);
+            const result = await postEmployee(employeeData); //TODO: then what with the result?
           } catch (exception) {
             console.error("Something blew up!", exception);
             //TODO: implement better exception handling

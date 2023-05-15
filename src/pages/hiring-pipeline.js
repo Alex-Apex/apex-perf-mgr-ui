@@ -33,7 +33,7 @@ const HiringPipelineContent = () => {
    * @returns 
    */
   const getDataTableConfig = (projects) => {
-    columns = Object.keys(projects[0]).map((field) => {
+    let columns = Object.keys(projects[0]).map((field) => {
       return {field:`${field}`, label:`${field}`};
     });
     columns.push({ field: 'Actions', label:'Actions'});
@@ -58,6 +58,28 @@ const HiringPipelineContent = () => {
         </div>
     }
     return contents;
+  };
+
+
+  const postNewProject = async(project) => {
+    try {
+      //TODO: don't use hardcoded urls
+      const response = await fetch("http://localhost:3001/projects", 
+      { 
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(project),
+      });   
+
+      const newProject = await response.json();
+      setProjects([...projects, newProject]);
+      toggleModalScreenVisibility();
+      console.info("New Project created successfully");
+    } catch(exception){
+      console.error('Exception while trying to create the new project: ', exception);
+    }
   };
 
   /**
@@ -89,7 +111,18 @@ const HiringPipelineContent = () => {
           onClick={toggleModalScreenVisibility} 
           primary={false} label={`Cancel`} isSubmit={false}/>
         <Button id="btnAddProject" 
-          onClick={() => {console.error(`btnAddProject has not been implemented`);}} 
+          onClick={async() => {
+            try{
+              // Create the project object
+              const project = {
+                projectName: document.getElementById('txtProjectName').value,
+                projectDescription: document.getElementById('txtProjectDescription').value,
+              };
+              const result = await postNewProject(project); //TODO: Then what with this result?
+            } catch(exception) {
+              console.error('There was an exception while trying to create a new project', exception);
+            }
+          }} 
           primary={true} label={`Add New Project`} isSubmit={true}/>
       </div>
     );
