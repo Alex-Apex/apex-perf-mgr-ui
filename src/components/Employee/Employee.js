@@ -18,11 +18,13 @@ function Employee({ employee }) {
   console.log(employee);
   return (
     <div className={style.employee}>
+      <div>Internal ID: {employee.EmpID}</div>
       <div>Practice: {employee.Practice}</div>
       <div>Level:{employee.Grade}</div>
       <div>Name:{employee.Name}</div>
       <div>Username:{employee.UserName}</div>
       <div>Weeks On Bench:{employee['Weeks On Bench']}</div>
+      <div>Availability:{employee['Availability']}</div>
       <div>
         <Button onClick={handleEdit} label='Edit' primary={true}/>        
       </div>

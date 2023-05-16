@@ -16,9 +16,11 @@ function EmployeeList({fields, employeesData}) {
       );
     });
     return (
-      <div className={styles.EmployeeList}>
+      <div>
         <h2>All Employees</h2>
-        {employeeList}
+        <div className={styles.EmployeeList}>
+            {employeeList}        
+        </div>
       </div>
     );
   }

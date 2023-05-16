@@ -19,86 +19,86 @@ const BenchReportContent = () => {
    * It shows the list view of the bench report for comparison.
    * It provides a better UX
    */
-  const toggleListView = () => {
-    console.log('Boop!');
+  const toggleListView = () => {   
     setShowListView(!showListView);
   };
-
-  const handleSubmittedBenchedEmployeeChanges = async (employee) => {
-    try {
-      const request = {
-        method : 'POST',
-        headers : {'Content-Type' : 'application/json',},
-        body : JSON.stringify(employee),
-      };
-      
-      const resp = await fetch('http://localhost:3001/employees/bench',request);
-      const result = await resp.json();
-
-      if(result.employee) {
-        // TODO: update this on the table
-        console.log('employee', result.employee);
-        setSelectedEmployee(result.employee);
-      } else {
-        console.error('Exception upserting employee', result.message);
-      }
-    } catch(exception) {
-      console.error('Exception while upserting employee', exception);
-    }
-  };
-
-  const handleTxtGradeChange = (x) => {
-
-  };
-
-  const handleTxtCompetencyChange = () => {};
   
-  const getBenchEmployeeForm = () => {
+  /**
+   * The bench has a history of events which can be logged with this form
+   */
+  const getBenchEventForm = () => {
     return (
-      <div className='frmBenchEmployee'>
-        <form onSubmit={handleSubmittedBenchedEmployeeChanges}>        
-          <label>
-            Grade:
-            <input
-              type="text"
-              name="Grade"
-              value={employee.Grade || ''}
-              onChange={handleTxtGradeChange}
-            />
-          </label>
-          <label>
-            Competency:
-            <input
-              type="text"
-              name="Competency"
-              value={employee.Competency || ''}
-              onChange={handleTxtCompetencyChange}
-            />
-          </label>
-          <label>
-            UTD Resume?:
-            <input
-              type="checkbox"
-              name="UTDResume"
-              checked={employee.UTDResume || false}
-              onChange={(e) => {
-                handleChange({ target: { name: e.target.name, value: e.target.checked } });
-              }}
-            />
-          </label>
-          <button type="submit">
-            {employee ? 'Update Employee' : 'Add Employee'}
-          </button>
-        </form>
+      <div>
+        <div className='formRow'>
+          <label htmlFor='txtEmployeeId'>Employee Id:</label>
+          <input type="text" id='txtEmployeeId'/>
+        </div>
+        <div className='formRow'>
+          <label htmlFor='txtBenchStatusMode'> Bench Event Status Mode: </label>
+          <input type="text" id='txtBenchStatusMode'/>
+        </div>
+        <div className='formRow'>
+          <label htmlFor='txtEventNotes'>Notes: </label>
+          <input type="text" id='txtEventNotes'/>
+        </div>
       </div>
     );
   };
+  
+  const postBenchEvent = async(event) => {
+    try {
+      //TODO: don't use hardcoded urls
+      const response = await fetch("http://localhost:3001/employees/bench/events", 
+      { 
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(event),
+      });   
 
+      const newBenchEvent = await response.json();
+      //setProjects([...projects, newProject]);
+      toggleModalScreenVisibility();
+      if(response.status!== 200){
+        console.error(response.status,newBenchEvent);
+      } else {
+        console.info("New Project created successfully");
+      }
+
+    } catch(exception){
+      console.error('Exception while trying to create the new project: ', exception);
+    }
+  };
+  /**
+   * Logs the bench event in the database.
+   */
+  const logBenchEvent = async() => {
+    try{
+      const event = {
+        employeeId: document.getElementById('txtEmployeeId').value,
+        statusModeName: document.getElementById('txtBenchStatusMode').value,
+        notes: document.getElementById('txtEventNotes').value,
+      };
+      const result = await postBenchEvent(event); //TODO: Then what with this result?
+    } catch(exception) {
+      console.error('There was an exception while trying to log the new event', exception);
+    }   
+  };
+
+  /**
+   * Gets the action buttons for the BenchEvent Forms
+   * @returns 
+   */
   const getModalButtons = () => {
     return(
       <div>
         <Button onClick={toggleModalScreenVisibility} primary={false} label={`Cancel`} isSubmit={false}/>
-        <Button onClick={() => {console.log("BLAH");}} primary={true} label={`Add New Employee`} isSubmit={true}/>
+        <Button onClick={() => {logBenchEvent();}} 
+          primary={true} 
+          label={`Log Bench Event`} 
+          isSubmit={false}
+        />
       </div>
     );
   }
@@ -126,11 +126,33 @@ const BenchReportContent = () => {
     fetchBench();
   }, []);
 
+  /**
+   * 
+   * @returns the modal screen to log new bench events
+   */
+  const getLogNewEventModalScreen = () => {
+    return (
+      <div>
+      <h1>Bench Report</h1>
+      <Button label={'Log new bench event'} primary={true} onClick={toggleModalScreenVisibility}/>
+      <Button label={'Toggle List View'} primary={false} 
+        onClick={() => {console.log(`ListViewVisible:${showListView}`);toggleListView();}}/>
+      <ModalScreen id='mdlsLogBenchEvent' 
+        isOpen={showModal}
+        children={getBenchEventForm()}
+        title={`Log New Bench Event`}
+        onClose={toggleModalScreenVisibility} 
+        buttons={getModalButtons()}/>
+    </div>
+    );
+  };
+  // TODO This is nasty code. please un-spaghetti it
+  // TODO can this be a component? (local component?)
+
   if (bench.length === 0) {
     return (
     <div>
-      <ModalScreen isOpen={showModal} children={getBenchEmployeeForm()} title={`Add Employee to Bench`}
-      onClose={toggleModalScreenVisibility} buttons={getModalButtons()}/>
+      {getLogNewEventModalScreen()}
       <p>The bench appears to be empty!</p>
     </div>
     );
@@ -140,36 +162,22 @@ const BenchReportContent = () => {
     });
     columns.push({ field: 'Actions', label:'Actions'});
   }
-
+      
   if(!showListView) {
     return (
       <div>
-        <h1>Bench Report</h1>
-        <Button label={'Add Employee to Bench'} primary={true}/>
-        <Button label={'Toggle List View'} primary={false} 
-          onClick={() => {console.log(`ListViewVisible:${showListView}`);toggleListView();}}/>
-  
-        <ModalScreen id='mdlsAddEmployee' 
-          isOpen={showModal} 
-          children={getBenchEmployeeForm()} 
-          title={`Add Employee to Bench`}
-          onClose={toggleModalScreenVisibility} 
-          buttons={getModalButtons()}/>
+        {getLogNewEventModalScreen()}
         <DataTable id='dtBenchReport' columns={columns} data={bench} />      
       </div>
     );
   } else {
     return (
       <div>
-        <h1>Bench Report</h1>
-        <Button label={'Add Employee to Bench'} primary={true}/>
-        <Button label={'Toggle List View'} primary={false} onClick={() => {toggleListView();}}/>
-  
-        <ModalScreen isOpen={showModal} children={getBenchEmployeeForm()} title={`Add Employee to Bench`}
-          onClose={toggleModalScreenVisibility} buttons={getModalButtons()}/>
+        {getLogNewEventModalScreen()}
         <EmployeeList id='emplstBenchReport' employeesData={bench} fields={columns} />    
       </div>
-    );}
+    );
+  }
 };
 
 /**
