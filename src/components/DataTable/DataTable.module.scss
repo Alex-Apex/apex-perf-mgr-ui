@@ -2,7 +2,9 @@
     
 .DataTable {
     grid-area: datatable;
+    border-collapse: collapse;
     width: 100%;  
+    background-color: style.$teal1;
   }
   
 .DataTable table {
@@ -15,6 +17,7 @@
     border: 1px solid style.$teal3;
     padding: 8px;
     text-align: left;
+    font-size: small;
   }
   
   .DataTable th {

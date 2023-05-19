@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react';
 import * as d3 from 'd3';
 
-const OrganizationalTree = ({ data }) => {
+const OrganizationalTree = ({ data, employeeClickHandler }) => {
   const svgRef = useRef();
 
   useEffect(() => {
@@ -9,7 +9,7 @@ const OrganizationalTree = ({ data }) => {
 
     // Set up dimensions and margins for the tree visualization
     const width = 1024;
-    const height =768;
+    const height =1024;
     const margin = { top: 10, right: 10, bottom: 10, left: 150 };
     let i= 0;
     // Clear the SVG in case it was previously rendered
@@ -81,11 +81,10 @@ const OrganizationalTree = ({ data }) => {
         .attr('rx', 5)
         .attr('ry', 5)
         .style('fill', (d) => d.children || d._children ? '#7C95A5AD' : '#d2dde85e')
-        .style('cursor', (d) => d.children || d._children ? 'pointer' : 'default')
-        .on('click', (event, d) => {
-          if (d.children || d._children) {
-            toggleChildren(d);
-          }
+        .style('cursor', 'pointer')
+        //.style('cursor', (d) => d.children || d._children ? 'pointer' : 'default')
+        .on('click', (event, d) => {          
+            employeeClickHandler(d);          
         });
       
       nodeEnter.append('circle')
@@ -170,7 +169,7 @@ const OrganizationalTree = ({ data }) => {
       }, [data]);
     
       return (
-        <svg ref={svgRef} width="100%" height="768" />
+        <svg ref={svgRef} width="100%" height="1024" />
       );
     };
     

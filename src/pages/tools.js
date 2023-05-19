@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import Layout from '../components/Layout/Layout';
 import { XLContext, XLProvider } from '../contexts/XLContext';
 import Button from '@/components/Button/Button';
+import DataTable from '@/components/DataTable/DataTable';
 
 const LOCAL_PATH_TO_BENCH_REPORT = '/Users/alejandrogomez/Downloads/CS Bench Report.xlsx';
 
@@ -23,13 +24,36 @@ const ToolsContent = () => {
     fetchXLData();
   }, []);
   let datum;
-
+  let columns;
   if (xlData.length === 0) {
     return <p>Could not read excel spreadsheet</p>;
   } else {
-    datum = Object.values(xlData[3]).reduce((acc,curr,idx) => {
-      return `${acc}, ${curr}`;
+    
+    columns = Object.values(xlData[3]).map((field) => {
+      return {field:`${field}`, label:`${field}`};
     });
+    
+    //console.log(xlData);
+    datum = xlData.filter((row,idx,arr) => { //Removing title rows and empty rows
+      return !isNaN(row.__EMPTY_1);
+    })
+    .map((row) =>{ //standardize the rows
+      let newRow = {};
+      return columns.map((col,idx) => {
+        const colExpression = idx === 0? '__EMPTY': `__EMPTY_${idx}`;        
+        return newRow[colExpression] = row[colExpression]? row[colExpression]: null;
+        
+      });
+    })
+    .map((row) => {
+      console.log(row);
+      let empObj = {};
+      const emp = Object.values(row).map((val, idx)=>{
+        empObj[columns[idx].field] = val; 
+      });
+      return empObj;      
+    });
+    console.log('The Datum: ',datum);
   }
 
   // Render the performance tracker, for example, as a table or list of employees
@@ -46,7 +70,7 @@ const ToolsContent = () => {
         <li>excel reader/loader (for bench, pipeline, others)</li>
         <li>Etc...</li>
       </ul>
-      <span>{datum}</span>
+      <DataTable columns={columns} data={datum}/>
       
     </div>
   );

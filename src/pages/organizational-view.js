@@ -157,7 +157,10 @@ const OrganizationalView = () => {
             <li>toggle $ view, perf view, promos view, workload heatmap by supervisor</li>            
           </ul>
         </div>
-        <OrganizationalTree data={employeeTree} />
+        <OrganizationalTree 
+          data={employeeTree} 
+          employeeClickHandler={(employee) => {console.log(employee.data);}}
+          />
     </Layout>
   );
 };
