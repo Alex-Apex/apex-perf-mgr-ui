@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
-import { ChampionsContext } from '@/contexts/ChampionsContext';
+import React, { useState, useContext, useEffect } from 'react';
+import { ChampionsContext, ChampionsProvider } from '@/contexts/ChampionsContext';
 import Layout from '../components/Layout/Layout';
 import Button from '@/components/Button/Button';
 import Modal from '@/components/ModalScreen/ModalScreen';
 import DataTable from '@/components/DataTable/DataTable';
 import Dropdown from '@/components/Dropdown/Dropdown';
+import { toTitleCase } from '@/utils/utils';
 
-const ChampionsFriday = () => {
+const ChampionsFridayContent = () => {
+  const { champions, setChampions } = useContext(ChampionsContext);
   const [showMdlLogBadge, setMdlLogBadge] = useState(false);
-  const columns = [{field:'FieldX', lable:'LabelX'}];
-  const championsData = [{}];
-
-  const fetchOrg = async () => {
+  const fetchChampionsRoster = async () => {
     try {
       // TODO: Get rid of this hardcoded url
       const response = await fetch('http://localhost:3001/employees/fridaychampions');
-      const championsData = await response.json();
-      setChampion(championsData);
+      const championsData = await response.json();      
+      setChampions(championsData);      
     } catch (exception) {
       console.error('Error while fetching the champions:', exception);
     }
@@ -29,11 +28,33 @@ const ChampionsFriday = () => {
     setMdlLogBadge(!showMdlLogBadge);
   };
 
+  useEffect(() => {
+    fetchChampionsRoster();
+  },[]);
+
+
+   /**
+   * Extracts the column configuration of fields and labels 
+   * @param {*} projects 
+   * @returns 
+   */
+  const getDataTableConfig = (roster) => {
+    /*console.log('The roster: ',roster);
+    return [{field:'employee_name', label:'Employee Name'}, {field:'y', label:'y'}];
+    */  
+     let columns = Object.keys(roster[0]).map((field) => {
+       return {field:`${field}`, label:`${toTitleCase(field)}`};
+     });
+     columns.push({ field: 'Actions', label:'Actions'});        
+     return columns;
+    
+  };
+
   /**
    * 
    */
-  const getAvailableBadges = () => {
-    return championsData;
+  const getAvailableBadges = () => {    
+    return [{value:"Pro", label:'Pro'},{value:"Versatile", label:'Versatile'},{value:"Deep Diver", label:'Deep Diver'}]; //TODO: get these from DB
   };
 
   /**
@@ -64,8 +85,10 @@ const ChampionsFriday = () => {
     );
   };
 
+//const columns = [{field:'employee_name', label:'Employee Name'}, {field:'y', label:'y'}];
+const columns = champions && champions.length > 0 ? getDataTableConfig(champions) : [];
 
-  return (
+  return (   
     <Layout>
       <div>
         <Modal id="mdlLogBadge" 
@@ -80,11 +103,19 @@ const ChampionsFriday = () => {
           primary={true} 
           onClick={() => {toggleShowModalLogBadge();}}/>
         </div>
-        <DataTable id="dtblLeaderboard" 
+        <DataTable id='dtblChampionsLeaderboard'
           columns={columns} 
-          data={championsData}/>
+          data={champions} />
       </div>
     </Layout>
+  );
+};
+
+const ChampionsFriday = () => {
+  return (
+    <ChampionsProvider>
+      <ChampionsFridayContent/>
+    </ChampionsProvider>
   );
 };
 
