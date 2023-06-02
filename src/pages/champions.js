@@ -10,6 +10,9 @@ import { toTitleCase } from '@/utils/utils';
 const ChampionsFridayContent = () => {
   const { champions, setChampions } = useContext(ChampionsContext);
   const [showMdlLogBadge, setMdlLogBadge] = useState(false);
+  const [selectedBadge, setSelectedBadge] = useState();
+  const [selectedChampion, setSelectedChampion] = useState();
+  const [performanceEventTypes, setPerformanceEventTypes] = useState();
   const fetchChampionsRoster = async () => {
     try {
       // TODO: Get rid of this hardcoded url
@@ -22,6 +25,19 @@ const ChampionsFridayContent = () => {
   };
 
   /**
+   * 
+   */
+  const fetchPerformanceEventsCatalog = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/employees/performance/events');
+      const perfEvents = await response.json();
+      setPerformanceEventTypes(perfEvents);
+    } catch(exception){
+      console.error('Error while fetching the performance event types catalog:', exception);
+    }
+  };
+
+  /**
    * Shows or hides the Modal Screen for Logging a new Badge
    */
   const toggleShowModalLogBadge = () => {
@@ -29,6 +45,7 @@ const ChampionsFridayContent = () => {
   };
 
   useEffect(() => {
+    fetchPerformanceEventsCatalog();
     fetchChampionsRoster();
   },[]);
 
@@ -39,38 +56,81 @@ const ChampionsFridayContent = () => {
    * @returns 
    */
   const getDataTableConfig = (roster) => {
-    /*console.log('The roster: ',roster);
-    return [{field:'employee_name', label:'Employee Name'}, {field:'y', label:'y'}];
-    */  
      let columns = Object.keys(roster[0]).map((field) => {
        return {field:`${field}`, label:`${toTitleCase(field)}`};
-     });
-     columns.push({ field: 'Actions', label:'Actions'});        
+     });     
      return columns;
-    
   };
 
   /**
-   * 
+   * Gets the available badges for the dropdown. 
    */
   const getAvailableBadges = () => {    
-    return [{value:"Pro", label:'Pro'},{value:"Versatile", label:'Versatile'},{value:"Deep Diver", label:'Deep Diver'}]; //TODO: get these from DB
+    return performanceEventTypes && performanceEventTypes.length>0 ? performanceEventTypes.map((type) => {
+      return {
+        value:type.id,
+        label: type.name.replace('Earn ','')
+      };
+    }):[{value:'', label:''}]; 
   };
 
   /**
    * Gets the form for Loging a new badge for an employee
    * @returns 
    */
-  const getLogBadgeChildren = () => {
-    return(
+  const getLogBadgeChildren = () => {    
+  
+    return(      
       <div>
-        fields go here
-        <Dropdown id="dpdnAvailableBadges"
-          options={getAvailableBadges()} 
-          defaultOption={'Select a badge'}
-          onSelect={()=>{console.log('Not implemented')}}/>
+        <div className='formRow'>
+          <label htmlFor='txtEmployeeId'> {selectedChampion && selectedChampion.id?`${selectedChampion.name}'s ID`:'Employee ID'} </label>
+          <input type="text" 
+            id='txtEmployeeId'
+            disabled={ selectedChampion && selectedChampion.id }
+            defaultValue={selectedChampion && selectedChampion.id ? selectedChampion.id : ''}/>
+        </div>
+        <div className='formRow'>
+          <label htmlFor='pdpnAvailableBadges'>Available Badges:</label>
+          <Dropdown id="dpdnAvailableBadges"
+            options={getAvailableBadges()} 
+            defaultOption={'Select a badge'}
+            onSelect={(value) => {
+              console.log(`You selected: ${value}`);
+              setSelectedBadge(value);
+            }}/>
+        </div>
+        <div className='formRow'>
+          <label htmlFor='txtNotes'> Notes: </label>
+          <input type="text" id='txtNotes'/>
+        </div>     
+        <div className='formRow'>
+          <label htmlFor='txtDateOccurred'> Date Occurred: </label>
+          <input type="text" id='txtDateOccurred'/>
+        </div>    
       </div>
     );
+  };
+
+  const postNewManagementEvent = async(event) => {
+      try {
+        //TODO: don't use hardcoded urls
+        const response = await fetch("http://localhost:3001/employees/performance/events", 
+        { 
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(event),
+        });   
+  
+        const newEvent = await response.json();
+        //Set events + etc
+        //setProjects([...projects, newProject]);
+        toggleShowModalLogBadge();
+        console.info("New Event Inserted");
+      } catch(exception){
+        console.error('Exception while trying to insert the new performance event: ', exception);
+      }    
   };
 
   /**
@@ -79,15 +139,64 @@ const ChampionsFridayContent = () => {
   const getLogBadgeButtons = () => {
     return(
       <div className='modalButtons'>
-        <Button primary={false} label={'Cancel'} onClick={() => toggleShowModalLogBadge()}/>
-        <Button primary={true} label={'Award Badge'} onClick={() => {console.log('Not implemented');}}/>
+        <Button 
+          primary={false} 
+          label={'Cancel'} 
+          onClick={() => {
+            setSelectedChampion({});
+            toggleShowModalLogBadge()
+          }}/>
+        <Button primary={true} label={'Award Badge'} onClick={ 
+          async() => {
+            try{
+              // create the Management Event Object
+              const MgmtEvent = {
+                employeeId: document.getElementById('txtEmployeeId').value,
+                performanceEventTypeId: selectedBadge,
+                notes: document.getElementById('txtNotes').value,
+                dateOccurred: `${document.getElementById('txtDateOccurred').value}`
+              };
+              console.log('The event: ',MgmtEvent);
+              const result = await postNewManagementEvent(MgmtEvent);
+              } catch(exception) {
+                console.error('There was an exception while trying to create a new Management Event', exception);
+              }
+          }}/>
       </div>
     );
   };
 
+  /**
+   * Inserts buttons on the column called "Actions" 
+   * So user can do stuff with them. 
+   * @param {*} data 
+   */
+  const getActionControls = (data) => {
+    let dataWithControls = data;    
+    if(dataWithControls[0] && !dataWithControls[0].Actions) { // have the controls previously been inserted?
+      return dataWithControls.map((row,idx) => {
+        if(!row.Actions){
+          row.Actions = (
+            <div className='ChampionActionButton'>
+            <Button id={`btnAwardBadge${idx}`}
+              onClick={() => {                
+                setSelectedChampion(row);
+                toggleShowModalLogBadge();
+              }}
+              primary={true}
+              label={`Award Badge`}/>
+          </div>
+          ); 
+        }
+      });
+    } 
+
+    return dataWithControls;
+  };
+
 //const columns = [{field:'employee_name', label:'Employee Name'}, {field:'y', label:'y'}];
 const columns = champions && champions.length > 0 ? getDataTableConfig(champions) : [];
-
+const dataWithControls = getActionControls(champions);
   return (   
     <Layout>
       <div>
@@ -105,7 +214,8 @@ const columns = champions && champions.length > 0 ? getDataTableConfig(champions
         </div>
         <DataTable id='dtblChampionsLeaderboard'
           columns={columns} 
-          data={champions} />
+          data={dataWithControls}
+          defaultSortColumn={columns && columns.length>0 ? columns[0].field: null}/>
       </div>
     </Layout>
   );
