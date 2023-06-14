@@ -7,6 +7,7 @@ import Modal from '@/components/ModalScreen/ModalScreen';
 
 const OrganizationalView = () => {
   const { employees, setEmployees } = useContext(EmployeeContext);
+  const [selectedEmployee, setSelectedEmployee] = useState();
   const[showModal, setShowModal] = useState(false);
   const fetchEmployees = async () => {
     try {
@@ -56,6 +57,7 @@ const OrganizationalView = () => {
   }
     
   const employeeTree = generateEmployeeTree(employees);
+
   const toggleCaptureEmployeeForm = () => {
     setShowModal(!showModal);
   };
@@ -106,6 +108,11 @@ const OrganizationalView = () => {
       </div>
     );
   };
+
+  /**
+   * 
+   * @returns 
+   */
   const getCaptureEmployeeFormFields = () => {
     return(
       <div className='EmployeeForm'>
@@ -115,7 +122,7 @@ const OrganizationalView = () => {
         </div>
         <div className='formRow'>
           { 
-          //* replac this with a drop down control*/
+          //* TODO replace this with a drop down control*/
           }          
           <label htmlFor="txtTitle"> Title: </label>
           <input type="text" id='txtTitle'/>
@@ -126,7 +133,7 @@ const OrganizationalView = () => {
         </div>
         <div className='formRow'>          
           <label htmlFor="txtSupervisorName"> Supervisor Name: </label>
-          <input type="text" id='txtSupervisorName'/>
+          <input type="text" id='txtSupervisorName' defaultValue={selectedEmployee ? selectedEmployee.name: ''}/>
         </div>
         <div className='formRow'>
           {
@@ -143,6 +150,28 @@ const OrganizationalView = () => {
     );
   };
 
+  /**
+   * selects a particular candidate as provided by the parameter. 
+   * Should the employee be different then the previous employee is 
+   * replaced witht his new one. If it is the same candidate then the 
+   * selection becomes null (it gets toggled)
+   * @param {*} employee 
+   */
+  const toggleSelectedEmployee = (employee) => {
+    const empId = employee.data.id;
+    const selEmpId = selectedEmployee ? selectedEmployee.id : -1;
+    console.log('comparing: Employee:',empId, 'selected emp: ',selEmpId);
+
+    if(empId === selEmpId) {
+      setSelectedEmployee(undefined);
+      console.log(`${employee.data.name} has been unselected.`);
+    } else {
+      setSelectedEmployee(employee.data);
+      console.log(`${employee.data.name} Is now selected.`);
+    }
+  };
+  
+
     return (
       <Layout>
         <Modal isOpen={showModal} 
@@ -150,8 +179,16 @@ const OrganizationalView = () => {
           children={getCaptureEmployeeFormFields()} 
           title={'Add new employee'}/>
         <h1>Digital Products Organization</h1>
-        <div>
-          <Button label={'Add Employee'} primary={true} onClick={toggleCaptureEmployeeForm}/>Features:
+        <div>          
+          {
+            selectedEmployee ? (
+              <Button id="btnShowAddEmpModal" 
+                label={`Selected ${selectedEmployee.name}`}
+                primary={true}
+                onClick={toggleCaptureEmployeeForm}/>
+            ): null
+          }
+          Features:
           <ul>
             <li>controls to toggle employee baseball cards and edit employees</li>            
             <li>toggle $ view, perf view, promos view, workload heatmap by supervisor</li>            
@@ -159,7 +196,7 @@ const OrganizationalView = () => {
         </div>
         <OrganizationalTree 
           data={employeeTree} 
-          employeeClickHandler={(employee) => {console.log(employee.data);}}
+          employeeClickHandler={(employee) => {toggleSelectedEmployee(employee);}}
           />
     </Layout>
   );
