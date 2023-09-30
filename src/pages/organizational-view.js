@@ -9,6 +9,7 @@ const OrganizationalView = () => {
   const { employees, setEmployees } = useContext(EmployeeContext);
   const [selectedEmployee, setSelectedEmployee] = useState();
   const[showModal, setShowModal] = useState(false);
+  const[showRemoveEmployeeModal, setShowRemoveEmployeeModal] = useState(false);
   const fetchEmployees = async () => {
     try {
       // TODO: Get rid of this hardcoded url
@@ -62,6 +63,27 @@ const OrganizationalView = () => {
     setShowModal(!showModal);
   };
 
+  const toggleRemoveEmployeeForm = () => {
+    setShowRemoveEmployeeModal(!showRemoveEmployeeModal);
+  };
+
+  const deleteEmployee = async (emp) => {
+    try {
+      const response = await fetch("http://localhost:3001/employees",{
+        method:"DELETE",
+        headers:{
+          "Content-Type": "application/json",
+        },
+        body: jestConfig.stringify(emp),
+      });
+      deleteEmployee(selectedEmployee);
+      toggleRemoveEmployeeForm();
+
+    } catch(exception){
+      console.error(`Exception while deleting the employee`,exception);
+    }
+  };
+
   const postEmployee = async (emp) => {
     try {
       const response = await fetch("http://localhost:3001/employees", 
@@ -81,6 +103,28 @@ const OrganizationalView = () => {
       console.error("Error creating employee:", error);
     }  
   };
+
+  const getRemoveEmployeeButtons = () => {
+    return(
+      <div className='buttonsRow'>
+        <Button id='btnCancel' label={'Cancel'} primary={false} onClick={()=>{toggleRemoveEmployeeForm();}}/>
+        <Button id='btnRemove' label={`Terminate:${selectedEmployee.name}`} 
+        primary={true} 
+        onClick={async () =>{
+          try {
+            const terminatedEmployeeData = {
+              employeeName: selectedEmployee.name,
+              employeeId:selectedEmployee.empId,
+              terminationDate: document.getElementById('txtLastDay').value,
+            };
+            const result = await deleteEmployee(employeeData); //TODO: then what with the result?
+          } catch(exception){
+            console.error(`Could not remove employee: ${selectedEmployee.name}`,exception);
+          }
+        }} />
+      </div>
+    );
+  }
 
   /**
    * 
@@ -108,6 +152,17 @@ const OrganizationalView = () => {
       </div>
     );
   };
+
+  const getRemoveEmployeeForm = () => {
+    return (
+      <div className='RemoveEmployeeForm'>
+        <div className='formRow'>        
+          <label htmlFor='txtLastDay'> Last Day in Apex: </label>
+          <input type="text" id='txtLastDay'/>
+        </div>
+      </div>
+    );
+  }
 
   /**
    * 
@@ -178,21 +233,30 @@ const OrganizationalView = () => {
           buttons={getEmployeeModalButtons()} 
           children={getCaptureEmployeeFormFields()} 
           title={'Add new employee'}/>
+        {
+          selectedEmployee ? (
+            <Modal isOpen={showRemoveEmployeeModal}
+              buttons={getRemoveEmployeeButtons()}
+              children={getRemoveEmployeeForm()}
+              title={`Terminate employee: ${selectedEmployee.name}`}/>
+          ):null
+        }
         <h1>Digital Products Organization</h1>
-        <div>          
+        <div>
           {
             selectedEmployee ? (
+            <div className='buttonStrip'>
               <Button id="btnShowAddEmpModal" 
-                label={`Selected ${selectedEmployee.name}`}
+                label={`Add Employee under: ${selectedEmployee.name}`}
                 primary={true}
                 onClick={toggleCaptureEmployeeForm}/>
+              <Button id="btnShowRemoveEmpModel"
+                label={`Remove: ${selectedEmployee.name}`}
+                primary={false}
+                onClick={toggleRemoveEmployeeForm}/>
+            </div>
             ): null
           }
-          Features:
-          <ul>
-            <li>controls to toggle employee baseball cards and edit employees</li>            
-            <li>toggle $ view, perf view, promos view, workload heatmap by supervisor</li>            
-          </ul>
         </div>
         <OrganizationalTree 
           data={employeeTree} 
